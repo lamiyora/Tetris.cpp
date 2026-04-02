@@ -208,7 +208,7 @@ int main()
                 t = tryMove(board, t, -1, 0);
             else if (key == 'd')
                 t = tryMove(board, t, 1, 0);
-            else if (key == 's')
+            else if (key == ' ')
                 t = tryMove(board, t, 0, 1);
 
             else if (key == 'w')
@@ -218,7 +218,15 @@ int main()
                 if (isValidMove(board, newT, 0, 0)) // position now
                     t = newT;
             }
-                
+            else if (key == 's')
+            {
+                tetrimino newT = t;
+                newT.rotation--;
+                if (newT.rotation < 0)
+                    newT.rotation = 3;
+                if (isValidMove(board, newT, 0, 0)) // position now
+                    t = newT;
+            }  
                 
         }
 
@@ -230,7 +238,7 @@ int main()
         else
         {
             if (t.pivotPosY <= 0) // 碰到頂 & 不能向下
-                break;
+                break; // GAME OVER
             writeToBoard(board, t);
             t = summonShape(5, 0);
         }
@@ -246,7 +254,8 @@ int main()
             }
         }
             
-        printf("\x1b[H");   // 回到左上角
+        printf("\x1b[H"); // 回到左上角
+        printf("\n\nSCORE: %d\n", score);   
         printBoard(board, t);
         _sleep(200);
     }
